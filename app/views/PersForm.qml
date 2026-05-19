@@ -1,13 +1,10 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import "./components" as Components
 
-ApplicationWindow{
-    visible: true
-    width: 700
-    height: 500
-    title: "Cadastro"
-
+Page {
+    //title: "Cadastro"
     // dialogo p mostrar msg de err/sucess vindas do python
     Dialog {
         id: msgDialog
@@ -33,21 +30,31 @@ ApplicationWindow{
         anchors.centerIn: parent
         spacing: 15
         width: 300
-        
-        Label{
-            text: "Dados do individuo"
-            font.pixelSize: 18
-            font.bold: true
-            Layout.alignment: Qt.AlignCenter
-        }
+        // Label{
+        //     text: "Dados do individuo"
+        //     font.pixelSize: 18
+        //     font.bold: true
+        //     Layout.alignment: Qt.AlignCenter
+        // }
+        Components.Title {lbl: "Cadastro de indivíduo"}
 
         TextField{
             id: inputName
             placeholderText: "Primeiro nome"
             Layout.fillWidth: true
-            //
         }
-        
+        // Components.LbInputField{
+        //     id: inputName
+        //     txt: "Primeiro nome (obrigatório)"
+        //     ph: "Digite o primeiro nome"
+        //     Layout.fillWidth: true
+        // }
+        // Components.LbInputField{
+        //     id: inputSurname
+        //     txt: "Sobrenome (obrigatório)"
+        //     ph: "Digite o sobrenome"
+        //     Layout.fillWidth: true
+        // }
         TextField {
             id: inputSurname
             placeholderText: "Sobrenome"
@@ -75,14 +82,11 @@ ApplicationWindow{
                     combGen.model[combGen.currentIndex].value
                 )
             }
-
-
         }
-
-
-
-
     }
 
-
+    Button{
+        text: "<- voltar"
+        onClicked: stack.pop()
+    }
 }

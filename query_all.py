@@ -1,24 +1,20 @@
-# script para consulta de todos
 from app.database.db import init_db, Session
-from app.models.individuo import Individuo
-
+# from app.models.individuo import Individuo
+from app.models.tables import Individuo
 session=Session()
-# 4. Função principal para buscar e exibir
+# script com funcao para consulta de todos: buscar e exibir
 def consulta_pessoa():
-
     print("\n--- Lista de Pessoas Cadastradas ---")
     # Executa a query equivalente a: SELECT * FROM individuo;
     individuos=session.query(Individuo).all()
-    # pessoas = session.query(Individuo).all()
 
     if not individuos:
         print("Nenhuma pessoa encontrada no banco de dados.")
         return
     # Itera sobre os resultados e imprime no terminal
     for i in individuos:
-        # Você pode formatar a saída como preferir
         # print(i)
-        print(f"<[{i.id}] Nome: {i.nome} {i.sobrenome}, {i.genero}, {i.vivo}>")
+        print(f"[{i.id}] Nome: {i.nome} {i.sobrenome}, {i.genero}")
         #print(f"ID: {i.id} | Nome: {i.nome} | Gen: {i.genero0} | Vivo? {i.vivo} | ")
         
     print("-" * 36 + "\n")
@@ -33,9 +29,7 @@ if __name__ == "__main__":
         # É uma boa prática fechar a sessão ao terminar
         session.close()
         
-        
-
-
+    
 # 1. Configuração da Conexão
 # Substitua 'usuario', 'senha' e 'nome_do_banco' pelos seus dados reais.
 # A porta 5434 está configurada diretamente na string de conexão.

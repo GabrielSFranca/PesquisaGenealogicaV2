@@ -2,12 +2,12 @@ from PySide6.QtCore import QObject, Slot, Signal
 from pydantic import ValidationError
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
-# err pydantic e sql
-from app.controllers.individuo_controller import IndividuoSchema
-from app.models.enums import GenderEnum
+
+from app.controllers.schemas import IndividuoSchema
+# from app.models.enums import GenderEnum
 from app.models.tables import Individuo
 
-class IndividuoBridge(QObject):
+class Controller(QObject):
     cadastroFinalizado=Signal(bool, str)
     
     def __init__(self, ses_mkr: sessionmaker ):
@@ -32,7 +32,9 @@ class IndividuoBridge(QObject):
             # validar dados
         except ValidationError as err:
             # erro capturado pelo pydantic
-            raise ValueError(f"Erro de Validação:\n{err.errors()[0]['msg']}")
+            self.cadastroFinalizado.emit(False, f"err de validacao: \n{err.errors()[0]['msg']}")
+            # raise ValueError(f"Erro de Validação:\n{err.errors()[0]['msg']}")
+            return 
         
         # 2. Conversão de Domínio (String para Enum do SQLAlchemy)
         # gen_map = {

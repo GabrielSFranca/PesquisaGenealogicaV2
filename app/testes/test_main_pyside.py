@@ -3,7 +3,7 @@ import sys
 from PySide6.QtWidgets import QApplication
 from app.database.db import init_db, Session
 # import controller
-from app.controllers.individuo_controller import IndividuoController
+from app.controllers.schemas import IndividuoController
 # import view
 from app.trash.cadastro_indi_vw import CadastroIndiVw
 

@@ -1,5 +1,5 @@
 #exemplo simples/sujo de uso de db.py
-from app.db import DBManager
+from app.testes.db import DBManager
 
 database = DBManager("sqlite:///database.db")
 def main_menu():
