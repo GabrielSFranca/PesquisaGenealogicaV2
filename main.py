@@ -2,6 +2,7 @@ import os
 import sys
 from app.database.db import init_db, Session
 from app.controllers.controller import Controller
+from app.controllers.app_bridge import AppBridge
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtQuickControls2 import QQuickStyle
@@ -16,7 +17,8 @@ if __name__ == "__main__":
     # motor responsavel por carregar o arquivo QML
     engine = QQmlApplicationEngine()
     # QML_FILE="Home.qml"
-    bridge = Controller(Session)
+    # bridge = Controller(Session)
+    bridge=AppBridge(Session)
     engine.rootContext().setContextProperty("backendBridge", bridge)
     # Carrega o arquivo da Interface Gráfica
     qml_file = os.path.join(os.path.dirname(__file__), "app/views/main.qml")

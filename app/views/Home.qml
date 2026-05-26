@@ -122,6 +122,11 @@ Page {
                 onClicked: { stack.push("PersForm.qml") }
             }
 
+            Button {
+                text: "Cadastrar União"
+                onClicked: { stack.push("UniaoForm.qml") }
+            }
+
         }
     }
 }

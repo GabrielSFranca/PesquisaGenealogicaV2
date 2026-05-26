@@ -10,7 +10,7 @@ def main():
     
     QQuickStyle.setStyle("Material")
     
-    FILE="QtQuickWiki.qml"
+    FILE="other.qml"
     engine.load(FILE)
 
     if not engine.rootObjects():

@@ -1,6 +1,6 @@
 from app.database.db import init_db, Session
-# from app.models.individuo import Individuo
-from app.models.tables import Individuo
+
+from app.models.individuo import Individuo
 session=Session()
 # script com funcao para consulta de todos: buscar e exibir
 def consulta_pessoa():
