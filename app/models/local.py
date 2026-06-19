@@ -1,6 +1,7 @@
 from typing import Optional, List
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String
+from pydantic import BaseModel, Field, field_validator, ValidationError, model_validator
 
 from .base import Base
 
@@ -28,3 +29,10 @@ class Local(Base):
     
     def __repr__(self) -> str:
         return f"{self.local_formatado()}"
+    
+
+class LocalCreate(BaseModel):
+    cidade: Optional[str]
+    estado: Optional[str]
+    regiao: Optional[str]
+    pais: str

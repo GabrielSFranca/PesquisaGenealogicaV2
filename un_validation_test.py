@@ -1,17 +1,14 @@
 """
 Script de teste para validação da tabela Uniao usando Pydantic
 """
-
 from pydantic import ValidationError
-from app.controllers.schemas import UnSchema
+from app.models.uniao import UniaoCreateSchema
 
-def testar_validacao_uniao():
+def testar_uniao():
     """Testa vários cenários de validação da Uniao"""
-    
     print("=" * 60)
     print("TESTES DE VALIDAÇÃO DA TABELA UNIAO COM PYDANTIC")
     print("=" * 60)
-    
     # Teste 1: Dados válidos (casamento completo)
     print("\n[TESTE 1] Casamento completo com data:")
     try:
@@ -23,7 +20,7 @@ def testar_validacao_uniao():
             "ano_casamento": 2000,
             "local_id": 1
         }
-        uniao1 = UnSchema(**dados1)
+        uniao1 = UniaoCreateSchema(**dados1)
         print(f"✓ PASSOU: {uniao1}")
     except ValidationError as e:
         print(f"✗ FALHOU: {e.errors()[0]['msg']}")
@@ -35,7 +32,7 @@ def testar_validacao_uniao():
             "conjuge_id1": 3,
             "conjuge_id2": 4
         }
-        uniao2 = UnSchema(**dados2)
+        uniao2 = UniaoCreateSchema(**dados2)
         print(f"✓ PASSOU: {uniao2}")
     except ValidationError as e:
         print(f"✗ FALHOU: {e.errors()[0]['msg']}")
@@ -47,7 +44,7 @@ def testar_validacao_uniao():
             "conjuge_id1": 5,
             "conjuge_id2": 5  # ERRO: mesma pessoa
         }
-        uniao3 = UnSchema(**dados3)
+        uniao3 = UniaoCreateSchema(**dados3)
         print(f"✓ PASSOU: {uniao3}")
     except ValidationError as e:
         print(f"✗ FALHOU (esperado): {e.errors()[0]['msg']}")
@@ -61,7 +58,7 @@ def testar_validacao_uniao():
             "dia_casamento": 20,
             "ano_casamento": 2015
         }
-        uniao4 = UnSchema(**dados4)
+        uniao4 = UniaoCreateSchema(**dados4)
         print(f"✓ PASSOU: {uniao4}")
     except ValidationError as e:
         print(f"✗ FALHOU (esperado): {e.errors()[0]['msg']}")
@@ -76,7 +73,7 @@ def testar_validacao_uniao():
             "mes_casamento": 2,  # Fevereiro não tem 31 dias
             "ano_casamento": 2020
         }
-        uniao5 = UnSchema(**dados5)
+        uniao5 = UniaoCreateSchema(**dados5)
         print(f"✓ PASSOU: {uniao5}")
     except ValidationError as e:
         print(f"✗ FALHOU (esperado): {e.errors()[0]['msg']}")
@@ -91,7 +88,7 @@ def testar_validacao_uniao():
             "mes_casamento": 1,
             "ano_casamento": 2099  # Futuro!
         }
-        uniao6 = UnSchema(**dados6)
+        uniao6 = UniaoCreateSchema(**dados6)
         print(f"✓ PASSOU: {uniao6}")
     except ValidationError as e:
         print(f"✗ FALHOU (esperado): {e.errors()[0]['msg']}")
@@ -103,7 +100,7 @@ def testar_validacao_uniao():
             "conjuge_id1": -1,  # ERRO: ID negativo
             "conjuge_id2": 12
         }
-        uniao7 = UnSchema(**dados7)
+        uniao7 = UniaoCreateSchema(**dados7)
         print(f"✓ PASSOU: {uniao7}")
     except ValidationError as e:
         print(f"✗ FALHOU (esperado): {e.errors()[0]['msg']}")
@@ -118,7 +115,7 @@ def testar_validacao_uniao():
             "mes_casamento": 13,  # ERRO: 13 meses?
             "ano_casamento": 2010
         }
-        uniao8 = UnSchema(**dados8)
+        uniao8 = UniaoCreateSchema(**dados8)
         print(f"✓ PASSOU: {uniao8}")
     except ValidationError as e:
         print(f"✗ FALHOU (esperado): {e.errors()[0]['msg']}")
@@ -128,4 +125,4 @@ def testar_validacao_uniao():
     print("=" * 60)
 
 if __name__ == "__main__":
-    testar_validacao_uniao()
+    testar_uniao()

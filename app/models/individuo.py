@@ -1,8 +1,12 @@
+import re
 from sqlalchemy import String, ForeignKey, Enum as SQLEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import Optional, List
+from .local import Local, LocalCreate
+from app.models.evento import EventCreate, EventCreateSchema
 from .enums import GenderEnum
 from .base import Base
+from pydantic import BaseModel, Field, field_validator, ValidationError, model_validator
 
 class Individuo(Base):
     # alteramos o nome da tabela pela variavel interna da classe Base
@@ -16,7 +20,7 @@ class Individuo(Base):
     sobrenome: Mapped[str]=mapped_column(String(100), nullable=False)
     
     genero: Mapped[GenderEnum] = mapped_column(
-        SQLEnum(GenderEnum, native_enum=False, length=10), 
+        SQLEnum(GenderEnum), 
         nullable=False,
         default=GenderEnum.OTHER
     ) # opcional = native_enum=False         default=GenderEnum.OTHER
@@ -41,13 +45,44 @@ class Individuo(Base):
         back_populates="conjuge2"
     )
     
-    eventos: Mapped[Optional[List["Evento"]]]=relationship(
+    eventos: Mapped[List["Evento"]]=relationship(
         back_populates="indi", 
         cascade="all, delete-orphan"
     )
+    
+    # eventos: Mapped[Optional[List["Evento"]]]=relationship(
+    #     back_populates="indi", 
+    #     cascade="all, delete-orphan"
+    # )
     
     def nome_completo(self) -> str:
          return f"{self.nome} {self.sobrenome}"
     
     def __repr__(self) -> str:
         return f"([{self.id}] {self.nome_completo()}- {self.genero})"
+
+
+
+
+
+class IndividuoCreate(BaseModel):
+    nome:str
+    sobrenome:str
+    genero: GenderEnum
+    eventos: EventCreate
+    # local: LocalCreate
+    
+class IndividuoCreateSchema(BaseModel):
+    nome: str=Field(..., min_length=2, max_length=50, description="Primeiro nome da pessoa")
+    sobrenome: str=Field(..., min_length=2, max_length=100, description="Sobrenome da pessoa")
+    # validacao suja, nao sei como validar isso, mas tbm nao acho necessario
+    genero: GenderEnum
+    
+    @field_validator('nome', 'sobrenome')
+    @classmethod
+    def validar_nome(cls, val: str) -> str:
+        if not val:
+            raise ValueError("O campo nao pode estar vazio")
+        if not re.match(r"^[A-Za-zÀ-ÿ\s]+$", val):
+            raise ValueError("Nome deve conter apenas letras")
+        return val.strip().title() # remove espacos em branco e captaliza
