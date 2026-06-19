@@ -88,7 +88,7 @@ class IndividuoSchema(BaseModel):
         return val.strip().title() # remove espacos em branco e captaliza
 
 
-class UnSchema(BaseModel):
+class UniaoCreateSchema(BaseModel):
     conjuge_id1: int = Field(..., gt=0, description="ID do primeiro cônjuge")
     conjuge_id2: int = Field(..., gt=0, description="ID do segundo cônjuge")
     
@@ -98,7 +98,7 @@ class UnSchema(BaseModel):
     ano_casamento: Optional[int] = Field(default=None, ge=1870, le=datetime.now().year, description="Ano do casamento")
     
     # Local do casamento (opcional)
-    local_id: Optional[int] = Field(default=None, gt=0, description="ID do local do casamento")
+    local_casamento_id: Optional[int] = Field(default=None, gt=0, description="ID do local do casamento")
     
     @field_validator('ano_casamento')
     @classmethod
@@ -111,13 +111,13 @@ class UnSchema(BaseModel):
         return val
     
     @model_validator(mode='after')
-    def validar_conjuges_diferentes(self) -> 'UnSchema':
+    def validar_conjuges_diferentes(self) -> 'UniaoCreateSchema':
         if self.conjuge_id1 == self.conjuge_id2:
             raise ValueError("Os cônjuges devem ser pessoas diferentes (conjuge_id1 ≠ conjuge_id2)")
         return self
     
     @model_validator(mode='after')
-    def validar_data_casamento(self) -> 'UnSchema':
+    def validar_data_casamento(self) -> 'UniaoCreateSchema':
         '''
         Validação cruzada complexa:
         1. Se tem dia, deve ter mês e ano.
@@ -183,7 +183,7 @@ class IndividuoController:
                     )
                     session.add(novo_event)
 
-                # novo_indi.eventos.append(eventonascimento)
+                novo_indi.eventos.append(novo_event)
                 session.commit()
                 session.refresh(novo_indi)
                 

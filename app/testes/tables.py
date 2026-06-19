@@ -181,7 +181,7 @@ class Uniao(Base):
     local: Mapped[Optional["Local"]] = relationship(back_populates="unioes")
     
     def __repr__(self) -> str:
-        return f"<Uniao: {self.conjuge_id1.nome} + {self.conjuge_id2.nome}"
+        return f"<Uniao: {self.conjuge1.nome} + {self.conjuge2.nome}"
     
     #local: Mapped[Optional[str]] = mapped_column() local vem de outra tabela
     #lista de filhos

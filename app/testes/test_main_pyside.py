@@ -1,7 +1,7 @@
 # main.py
 import sys
 from PySide6.QtWidgets import QApplication
-from app.database.db import init_db, Session
+from app.models.database import init_db, SessionLocal
 # import controller
 from app.controllers.schemas import IndividuoController
 # import view
@@ -14,7 +14,7 @@ def main():
     print("Inicializando base de dados...")
     init_db()
     # passa a sessao para o controle
-    controller=IndividuoController(Session)
+    controller=IndividuoController(SessionLocal)
     
     # inicia a Interface Gráfica de Usuário com PySide6
     app = QApplication(sys.argv)
